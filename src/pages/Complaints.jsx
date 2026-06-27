@@ -151,8 +151,8 @@ export default function Complaints() {
               <p className="text-sm font-medium">No complaints found.</p>
             </div>
           ) : (
-            <div className="bg-white dark:bg-[#1E293B] rounded-2xl border border-gray-200 dark:border-white/10 shadow-sm overflow-hidden">
-              <table className="w-full">
+            <div className="bg-white dark:bg-[#1E293B] rounded-2xl border border-gray-200 dark:border-white/10 shadow-sm overflow-visible">
+              <table className="w-full overflow-visible">
                 <thead>
                   <tr className="border-b border-gray-100 bg-gray-50/50 dark:border-gray-800 dark:bg-gray-800/50">
                     <th className="text-left text-xs font-semibold text-gray-500 dark:text-[#94A3B8] py-3.5 px-5">ID</th>
@@ -177,7 +177,7 @@ export default function Complaints() {
                         </td>
                         <td className="py-3.5 px-5"><span className="text-xs font-medium text-gray-600 bg-gray-100 px-2 py-1 rounded dark:text-gray-300 dark:bg-gray-800">{c.category}</span></td>
                         <td className="py-3.5 px-5 text-sm text-gray-500 dark:text-[#94A3B8]">{new Date(c.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</td>
-                        <td className="py-3.5 px-5">
+                        <td className="py-3.5 px-5 relative">
                           {isAdmin ? (
                             <Dropdown value={c.status} onChange={val => handleStatusChange(c._id, val)} options={[{ value: 'pending', label: 'Pending' }, { value: 'in-progress', label: 'In Progress' }, { value: 'resolved', label: 'Resolved' }]} className="inline-flex" />
                           ) : (
