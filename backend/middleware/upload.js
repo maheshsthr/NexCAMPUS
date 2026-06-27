@@ -68,7 +68,8 @@ const uploadToCloudinary = async (file, folder = 'campus360') => {
     });
     return { url: result.secure_url, public_id: result.public_id };
   }
-  const url = `/uploads/${file.filename}`;
+  const base = process.env.RAILWAY_PUBLIC_DOMAIN ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}` : '';
+  const url = `${base}/uploads/${file.filename}`;
   return { url, public_id: file.filename };
 };
 

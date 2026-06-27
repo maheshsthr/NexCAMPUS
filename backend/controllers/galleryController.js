@@ -1,6 +1,15 @@
 import Gallery from '../models/Gallery.js';
 import { uploadToCloudinary } from '../middleware/upload.js';
 
+const apiBase = process.env.RAILWAY_PUBLIC_DOMAIN
+  ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}`
+  : '';
+
+function fullUrl(url) {
+  if (!url || url.startsWith('http')) return url;
+  return `${apiBase}${url}`;
+}
+
 export const getGallery = async (req, res, next) => {
   try {
     const { page = 1, limit = 20 } = req.query;
@@ -17,7 +26,10 @@ export const getGallery = async (req, res, next) => {
       .limit(Number(limit));
 
     res.json({
-      images,
+      images: images.map(img => ({
+        ...img.toObject(),
+        image_url: fullUrl(img.image_url),
+      })),
       total,
       page: Number(page),
       totalPages: Math.ceil(total / limit),

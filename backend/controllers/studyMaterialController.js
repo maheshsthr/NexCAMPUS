@@ -1,6 +1,15 @@
 import StudyMaterial from '../models/StudyMaterial.js';
 import { uploadToCloudinary } from '../middleware/upload.js';
 
+const apiBase = process.env.RAILWAY_PUBLIC_DOMAIN
+  ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}`
+  : '';
+
+function fullUrl(url) {
+  if (!url || url.startsWith('http')) return url;
+  return `${apiBase}${url}`;
+}
+
 export const getStudyMaterials = async (req, res, next) => {
   try {
     const { search, type, semester, page = 1, limit = 20 } = req.query;
@@ -25,7 +34,10 @@ export const getStudyMaterials = async (req, res, next) => {
       .limit(Number(limit));
 
     res.json({
-      materials,
+      materials: materials.map(m => ({
+        ...m.toObject(),
+        file_url: fullUrl(m.file_url),
+      })),
       total,
       page: Number(page),
       totalPages: Math.ceil(total / limit),
