@@ -12,7 +12,8 @@ dist
 new theme/
 dist-ssr
 *.local
-.env.example
+.env
+.env*
 
 # Editor directories and files
 .vscode/*
