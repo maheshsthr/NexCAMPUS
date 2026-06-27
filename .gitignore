@@ -9,7 +9,6 @@ lerna-debug.log*
 
 node_modules
 dist
-.env
 new theme/
 dist-ssr
 *.local
@@ -25,4 +24,3 @@ dist-ssr
 *.sln
 *.sw?
 .vercel
-.env*
