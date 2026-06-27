@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { Search, Menu, Upload, Trash2, X, Image as ImageIcon, Sun, Moon } from 'lucide-react'
+import { Search, Menu, Upload, Trash2, X, Image as ImageIcon, Sun, Moon, AlertCircle } from 'lucide-react'
 import Sidebar from '../components/Sidebar'
 import { useTheme } from '../context/ThemeContext'
 import { getGallery, uploadGalleryImage, deleteGalleryImage } from '../api'
@@ -18,6 +18,7 @@ export default function Gallery() {
   const [preview, setPreview] = useState(null)
   const fileRef = useRef()
   const [search, setSearch] = useState('')
+  const [uploadError, setUploadError] = useState('')
 
   function load() {
     setLoading(true)
@@ -40,6 +41,7 @@ export default function Gallery() {
     e.preventDefault()
     if (!file || !form.title.trim()) return
     setUploading(true)
+    setUploadError('')
     try {
       const fd = new FormData()
       fd.append('image', file)
@@ -52,7 +54,7 @@ export default function Gallery() {
       setShowUpload(false)
       load()
     } catch (err) {
-      console.error(err)
+      setUploadError(err.message || 'Upload failed')
     } finally {
       setUploading(false)
     }
@@ -137,6 +139,11 @@ export default function Gallery() {
                 <h2 className="text-lg font-bold text-gray-900 dark:text-white">Upload Image</h2>
                 <button onClick={() => { setShowUpload(false); setPreview(null); setFile(null) }} className="p-1.5 rounded-lg text-gray-400 hover:bg-gray-100 dark:text-gray-500 dark:hover:bg-gray-800 cursor-pointer"><X size={20} /></button>
               </div>
+              {uploadError && (
+                <div className="flex items-center gap-2 bg-red-50 text-red-600 text-sm p-3 rounded-xl mb-4 dark:bg-red-950/40">
+                  <AlertCircle size={16} /> <span>{uploadError}</span>
+                </div>
+              )}
               <form onSubmit={handleUpload} className="space-y-4">
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5">Image</label>
